@@ -5,8 +5,11 @@ let stateClicked
 for (let i = 0; i < states.length; i++){
     states[i].addEventListener("click", function(){
         stateClicked = states[i];
+        for (let state of states){
+          if (document.getElementById(state.id).style.fill != 'rgb(202, 202, 202)')
+            document.getElementById(state.id).style.fill = 'rgb(202, 202, 202)';
+        }
         document.getElementById(stateClicked.id).style.fill = 'black';
-        console.log(stateClicked.id)
     });
 }
 
