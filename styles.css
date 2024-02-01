@@ -1,6 +1,6 @@
 path {
     stroke: white;
-    fill:rgb(202, 202, 202) !important;
+    fill:rgb(202, 202, 202);
 
     transition: fill .4s ease;
     transform-origin: center center;

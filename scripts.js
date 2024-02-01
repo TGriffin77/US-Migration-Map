@@ -1,11 +1,12 @@
 // Assign a click listener for each state
 let states = document.getElementsByTagName('path')
-let stateClicked = new Array(states.length).fill(false)
+let stateClicked
 
 for (let i = 0; i < states.length; i++){
     states[i].addEventListener("click", function(){
-        stateClicked.fill(false)
-        stateClicked[i] = true;
+        stateClicked = states[i];
+        document.getElementById(stateClicked.id).style.fill = 'black';
+        console.log(stateClicked.id)
     });
 }
 
