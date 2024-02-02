@@ -1,11 +1,16 @@
-// Assign a click listener for each state
-let states = document.getElementsByTagName('path')
+const states = document.getElementsByTagName('path')
 let stateClicked
 
+// function collectMigrationInformation(state){
+
+// }
+
+// Assign a click listener for each state
 for (let i = 0; i < states.length; i++){
-    states[i].addEventListener("click", function(){
+    states[i].addEventListener('click', function(){
         stateClicked = states[i];
-        for (let state of states){
+        document.getElementById('current').innerHTML = `Current Selection: ${stateClicked.dataset.name} (${stateClicked.dataset.id})`
+        for (const state of states){
           if (document.getElementById(state.id).style.fill != 'rgb(202, 202, 202)')
             document.getElementById(state.id).style.fill = 'rgb(202, 202, 202)';
         }
@@ -14,11 +19,11 @@ for (let i = 0; i < states.length; i++){
 }
 
 // Box appearing displaying the name of the state that mouse is hovering over
-var detailsBox = document.getElementById('details-box');
+const detailsBox = document.getElementById('details-box');
 
 document.addEventListener('mouseover', function (e) {
   if (e.target.tagName == 'path') {
-    var content = e.target.dataset.name;
+    const content = e.target.dataset.name;
     detailsBox.innerHTML = content;
     detailsBox.style.opacity = "70%";
   }
@@ -29,7 +34,7 @@ document.addEventListener('mouseover', function (e) {
 
 // Follow the mouse and assign the name of the state box below it
 window.onmousemove = function (e) {
-  var x = e.clientX,
+  const x = e.clientX,
       y = e.clientY;
   detailsBox.style.top = (y + 20) + 'px';
   detailsBox.style.left = (x + 50) + 'px';
