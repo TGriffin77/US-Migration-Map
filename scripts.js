@@ -1,14 +1,24 @@
-const states = document.getElementsByTagName('path')
-let stateClicked
+let data;
+fetch('./data.json')
+  .then((response) => response.json())
+  .then((json) => {data = json;})
 
-// function collectMigrationInformation(state){
+const states = document.getElementsByTagName('path');
+let stateClicked;
 
-// }
+async function collectMigrationInformation(state){
+
+}
 
 // Assign a click listener for each state
 for (let i = 0; i < states.length; i++){
     states[i].addEventListener('click', function(){
+        if (states[i] === stateClicked) return; 
+
         stateClicked = states[i];
+
+        collectMigrationInformation('a');
+
         document.getElementById('current').innerHTML = `Current Selection: ${stateClicked.dataset.name} (${stateClicked.dataset.id})`
         for (const state of states){
           if (document.getElementById(state.id).style.fill != 'rgb(202, 202, 202)')
