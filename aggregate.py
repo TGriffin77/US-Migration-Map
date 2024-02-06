@@ -28,7 +28,6 @@ for i in range(0,11):
             break
         
         stateName = getCellValue(cur_row, 1)
-        stateData =  []
 
         fromStateData = {}
 
@@ -40,8 +39,6 @@ for i in range(0,11):
 
         fromStateData[getCellValue(7, cur_col - 3)] = singleData # {'Alabama': {'estimate': 'N/A', 'MOE': 'N/A'}
 
-        stateData.append(fromStateData)
-
         for k in range(0,10):
             for l in range(0,5):
                 if cur_col == 28: # District of Columbia
@@ -50,20 +47,16 @@ for i in range(0,11):
 
                 singleData = {}
 
-                fromStateData = {}
-
                 singleData['estimate'] = getCellValue(cur_row, cur_col)
                 cur_col += 1
                 singleData['MOE'] = getCellValue(cur_row, cur_col)
                 cur_col += 1
 
                 fromStateData[getCellValue(7, cur_col - 2)] = singleData
-
-                stateData.append(fromStateData)
                 
             cur_col += 1
         cur_col = 10
-        data[stateName] = stateData
+        data[stateName] = fromStateData
 
         cur_row += 1
     cur_row += 1
