@@ -37,7 +37,7 @@ for i in range(0,11):
         singleData['MOE'] = getCellValue(cur_row, cur_col)
         cur_col += 2
 
-        fromStateData[getCellValue(7, cur_col - 3)] = singleData # {'Alabama': {'estimate': 'N/A', 'MOE': 'N/A'}
+        fromStateData[getCellValue(7, cur_col - 3)] = singleData # {'State': {'estimate': 'N/A', 'MOE': 'N/A'}
 
         for k in range(0,10):
             for l in range(0,5):
@@ -56,7 +56,8 @@ for i in range(0,11):
                 
             cur_col += 1
         cur_col = 10
-        data[stateName] = fromStateData
+        currentYear['2022'] = fromStateData
+        data[stateName] = currentYear
 
         cur_row += 1
     cur_row += 1
