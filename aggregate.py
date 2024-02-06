@@ -3,16 +3,16 @@ import json
 
 data = {}
 
-def scanExcel(year):
+def scanExcelNew(year):
 
     def getCellValue(row, col):
         cell = ws.cell(row, col)
         val = cell.value
         return val
-    if year == 2022:
-        wb = openpyxl.load_workbook('State_to_State_Migration_Table_2022_T13.xlsx')
-    else:
-        wb = openpyxl.load_workbook('State_to_State_Migrations_Table_2021.xlsx')
+    try:
+        wb = openpyxl.load_workbook(f'State_to_State_Migrations_Table_{year}.xlsx')
+    except FileNotFoundError as e:
+        raise Exception(f"Invalid file name was entered with year: {year}")
     ws = wb['Table']
 
     cur_row = 12
@@ -60,7 +60,7 @@ def scanExcel(year):
                     
                 cur_col += 1
             cur_col = 10
-            if year == 2022:
+            if year == 2010:
                 data[stateName] = {}
             data[stateName][year] = fromStateData
 
@@ -68,6 +68,8 @@ def scanExcel(year):
         cur_row += 1
     return 
 
-scanExcel(2022)
-scanExcel(2021)
-print(data)
+for i in range(2010,2023):
+    scanExcelNew(i)
+
+with open ('test.json', 'w') as output:
+    json.dump(data, output)
