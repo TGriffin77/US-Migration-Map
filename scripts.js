@@ -6,8 +6,27 @@ fetch('./data.json')
 const states = document.getElementsByTagName('path');
 let stateClicked;
 
-async function collectMigrationInformation(state){
+function collectMigrationInformation(target_state){
 
+  const target_state_data = data[target_state];
+
+  let migrate_data = {};
+
+  for (const year in target_state_data){
+
+    for (const state in target_state_data[year]){
+      if (state === target_state) continue;
+
+        const estimate = target_state_data[year][state].estimate;
+      if (!(state in migrate_data)){
+        migrate_data[state] = estimate;
+      }
+      else{
+        migrate_data[state] += estimate;
+      }
+    }
+  }
+  return migrate_data;
 }
 
 // Assign a click listener for each state
@@ -17,7 +36,7 @@ for (let i = 0; i < states.length; i++){
 
         stateClicked = states[i];
 
-        collectMigrationInformation('a');
+        const migrant_data = collectMigrationInformation(stateClicked.dataset.name);
 
         document.getElementById('current').innerHTML = `Current Selection: ${stateClicked.dataset.name} (${stateClicked.dataset.id})`
         for (const state of states){
