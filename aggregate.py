@@ -41,7 +41,7 @@ def scanExcelOld(year):
                     if cur_col == 19: # District of Columbia
                         cur_col += 2
                         continue
-                    if cur_col == 113: # Puerto Rico
+                    if cur_col == 87: # Puerto Rico
                         cur_col += 2
                         continue
                     if cur_col == 141: # end of data
@@ -128,5 +128,5 @@ for i in range(2005,2010):
 for i in range(2010,2023):
     scanExcelNew(i)
 
-with open ('test.json', 'w') as output:
+with open ('data.json', 'w') as output:
     json.dump(data, output)
