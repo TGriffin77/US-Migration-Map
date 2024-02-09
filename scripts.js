@@ -26,7 +26,14 @@ function collectMigrationInformation(target_state){
       }
     }
   }
+  delete migrate_data.null
   return migrate_data;
+}
+
+function calcNumSummary(migrant_data){
+  const max = Object.keys(migrant_data).reduce((a,b) => migrant_data[a] > migrant_data[b] ? a : b);
+  const min = Object.keys(migrant_data).reduce((a,b) => migrant_data[a] < migrant_data[b] ? a : b);
+  console.log(max, min);
 }
 
 // Assign a click listener for each state
@@ -36,14 +43,16 @@ for (let i = 0; i < states.length; i++){
 
         stateClicked = states[i];
 
-        const migrant_data = collectMigrationInformation(stateClicked.dataset.name);
-
         document.getElementById('current').innerHTML = `Current Selection: ${stateClicked.dataset.name} (${stateClicked.dataset.id})`
         for (const state of states){
           if (document.getElementById(state.id).style.fill != 'rgb(202, 202, 202)')
             document.getElementById(state.id).style.fill = 'rgb(202, 202, 202)';
         }
         document.getElementById(stateClicked.id).style.fill = 'black';
+        
+        const migrant_data = collectMigrationInformation(stateClicked.dataset.name);
+        calcNumSummary(migrant_data)
+        console.log(migrant_data)
     });
 }
 
