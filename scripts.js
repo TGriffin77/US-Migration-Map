@@ -7,17 +7,14 @@ const states = document.getElementsByTagName('path');
 let stateClicked;
 
 function collectMigrationInformation(target_state){
-
   const target_state_data = data[target_state];
-
   let migrate_data = {};
 
   for (const year in target_state_data){
-
     for (const state in target_state_data[year]){
       if (state === target_state) continue;
 
-        const estimate = target_state_data[year][state].estimate;
+      const estimate = target_state_data[year][state].estimate;
       if (!(state in migrate_data)){
         migrate_data[state] = estimate;
       }
@@ -31,9 +28,30 @@ function collectMigrationInformation(target_state){
 }
 
 function calcNumSummary(migrant_data){
-  const max = Object.keys(migrant_data).reduce((a,b) => migrant_data[a] > migrant_data[b] ? a : b);
-  const min = Object.keys(migrant_data).reduce((a,b) => migrant_data[a] < migrant_data[b] ? a : b);
-  console.log(max, min);
+  const max = Object.values(migrant_data).reduce((a,b) => a > b ? a : b);
+  const min = Object.values(migrant_data).reduce((a,b) => a < b ? a : b);
+  
+  let rankings = {};
+
+  for (const state in migrant_data){
+    const percentile = Math.ceil(((migrant_data[state] - min)*100) / (max - min));
+    rankings[state] = percentile;
+  }
+
+  return rankings;
+}
+
+function colorStates(migrant_data, rankings){
+  const elements = document.getElementsByTagName('path');
+
+  for (const state in migrant_data){
+    for (let element of elements){
+      if (element.dataset.name == state){
+        const lightness = Math.ceil((rankings[state]*65)/100+10);
+        element.style.fill = `hsl(200, 100%, ${100-lightness}%)`;
+      }
+    }
+  }
 }
 
 // Assign a click listener for each state
@@ -51,8 +69,9 @@ for (let i = 0; i < states.length; i++){
         document.getElementById(stateClicked.id).style.fill = 'black';
         
         const migrant_data = collectMigrationInformation(stateClicked.dataset.name);
-        calcNumSummary(migrant_data)
-        console.log(migrant_data)
+        const rankings = calcNumSummary(migrant_data);
+        
+        colorStates(migrant_data, rankings);
     });
 }
 
