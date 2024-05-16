@@ -1,3 +1,11 @@
+##################################################################################################################
+# Python script used to aggregate the data from Excel sheets into a json format.                                 #
+#                                                                                                                #
+# Data is collected from the US Census's State-to-State Migration Flows Database                                 #
+#                                                                                                                #
+# Sources: https://www.census.gov/data/tables/time-series/demo/geographic-mobility/state-to-state-migration.html #
+##################################################################################################################
+
 import openpyxl
 import json
 
@@ -8,6 +16,8 @@ def getCellValue(row, col, ws):
         val = cell.value
         return val
 
+# Scans older template of the excel file.
+# Years 2005 - 2010 are in this format.
 def scanExcelOld(year):
     try:
         wb = openpyxl.load_workbook(f'State_to_State_Migrations_Table_{year}.xlsx')
@@ -65,6 +75,8 @@ def scanExcelOld(year):
         cur_row += 1
     return
 
+# Scans newer template of the excel file.
+# Years 2010 - 2022 are in this format.
 def scanExcelNew(year):
     try:
         wb = openpyxl.load_workbook(f'State_to_State_Migrations_Table_{year}.xlsx')
