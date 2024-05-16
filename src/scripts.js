@@ -1,5 +1,5 @@
 let data;
-fetch('./data.json')
+fetch('./data/migrate-2005-2022.json')
   .then((response) => response.json())
   .then((json) => {data = json;})
 
