@@ -9,10 +9,12 @@ class StateInteraction {
   constructor() {
     this.states = document.getElementsByTagName("path");
     this.stateClicked;
+    this.migrant_data;
+    this.rankings;
 
     // Assign a click listener for each state
     for (let i = 0; i < this.states.length; i++) {
-      this.states[i].addEventListener("click",  () => {
+      this.states[i].addEventListener("click", () => {
         if (this.states[i] === this.stateClicked) return;
 
         this.stateClicked = this.states[i];
@@ -28,12 +30,12 @@ class StateInteraction {
         }
         document.getElementById(this.stateClicked.id).style.fill = "black";
 
-        const migrant_data = this.collectMigrationInformation(
+        this.migrant_data = this.collectMigrationInformation(
           this.stateClicked.dataset.name
         );
-        const rankings = this.calcNumSummary(migrant_data);
+        this.rankings = this.calcNumSummary();
 
-        this.colorStates(migrant_data, rankings);
+        this.colorStates();
       });
     }
   }
@@ -58,15 +60,19 @@ class StateInteraction {
     return migrate_data;
   }
 
-  calcNumSummary(migrant_data) {
-    const max = Object.values(migrant_data).reduce((a, b) => (a > b ? a : b));
-    const min = Object.values(migrant_data).reduce((a, b) => (a < b ? a : b));
+  calcNumSummary() {
+    const max = Object.values(this.migrant_data).reduce((a, b) =>
+      a > b ? a : b
+    );
+    const min = Object.values(this.migrant_data).reduce((a, b) =>
+      a < b ? a : b
+    );
 
     let rankings = {};
 
-    for (const state in migrant_data) {
+    for (const state in this.migrant_data) {
       const percentile = Math.ceil(
-        ((migrant_data[state] - min) * 100) / (max - min)
+        ((this.migrant_data[state] - min) * 100) / (max - min)
       );
       rankings[state] = percentile;
     }
@@ -74,13 +80,13 @@ class StateInteraction {
     return rankings;
   }
 
-  colorStates(migrant_data, rankings) {
+  colorStates() {
     const elements = document.getElementsByTagName("path");
 
-    for (const state in migrant_data) {
+    for (const state in this.migrant_data) {
       for (let element of elements) {
         if (element.dataset.name == state) {
-          const lightness = Math.ceil((rankings[state] * 65) / 100 + 10);
+          const lightness = Math.ceil((this.rankings[state] * 65) / 100 + 10);
           element.style.fill = `hsl(200, 100%, ${100 - lightness}%)`;
         }
       }
@@ -118,4 +124,4 @@ class StateDetailBox {
 let d = new StateDetailBox();
 d.mousetrack();
 
-let i = new StateInteraction()
+let i = new StateInteraction();
