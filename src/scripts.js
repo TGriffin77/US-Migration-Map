@@ -75,25 +75,33 @@ for (let i = 0; i < states.length; i++){
     });
 }
 
-// Box appearing displaying the name of the state that mouse is hovering over
-const detailsBox = document.getElementById('details-box');
-
-document.addEventListener('mouseover', function (e) {
-  if (e.target.tagName == 'path') {
-    const content = e.target.dataset.name;
-    detailsBox.innerHTML = content;
-    detailsBox.style.opacity = "70%";
+class StateDetailBox {
+  constructor(){
+    // Box appearing displaying the name of the state that mouse is hovering over
+    this.detailsBox = document.getElementById('details-box');
   }
-  else {
-    detailsBox.style.opacity = "0%";
-  }
-});
 
-// Follow the mouse and assign the name of the state box below it
-window.onmousemove = function (e) {
-  const x = e.clientX,
-      y = e.clientY;
-  detailsBox.style.top = (y + 20) + 'px';
-  detailsBox.style.left = (x + 50) + 'px';
+  mousetrack(){
+    document.addEventListener('mouseover', function (e) {
+      if (e.target.tagName == 'path') {
+        const content = e.target.dataset.name;
+        this.detailsBox.innerHTML = content;
+        this.detailsBox.style.opacity = "70%";
+      }
+      else {
+        this.detailsBox.style.opacity = "0%";
+      }
+    });
+    
+    // Follow the mouse and assign the name of the state box below it
+    window.onmousemove = function (e) {
+      const x = e.clientX,
+          y = e.clientY;
+      this.detailsBox.style.top = (y + 20) + 'px';
+      this.detailsBox.style.left = (x + 50) + 'px';
+    };
+  }
 };
 
+d = StateDetailBox()
+d.mousetrack()
