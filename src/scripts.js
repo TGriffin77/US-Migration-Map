@@ -98,6 +98,7 @@ class StateDetailBox {
   constructor() {
     // Box appearing displaying the name of the state that mouse is hovering over
     this.detailsBox = document.getElementById("details-box");
+    this.mousetrack();
   }
 
   mousetrack() {
@@ -122,6 +123,5 @@ class StateDetailBox {
 }
 
 let d = new StateDetailBox();
-d.mousetrack();
 
 let i = new StateInteraction();
