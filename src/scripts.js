@@ -19,9 +19,6 @@ class StateInteraction {
 
         this.stateClicked = this.states[i];
 
-        document.getElementById(
-          "current"
-        ).innerHTML = `Current Selection: ${this.stateClicked.dataset.name} (${this.stateClicked.dataset.id})`;
         for (const state of this.states) {
           if (
             document.getElementById(state.id).style.fill != "rgb(202, 202, 202)"
