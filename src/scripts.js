@@ -1,9 +1,45 @@
-let data;
-fetch("./data/migrate-2005-2022.json")
-  .then((response) => response.json())
-  .then((json) => {
-    data = json;
-  });
+async function fetchData() {
+  const res = await fetch("./data/migrate-2005-2022.json");
+  const jsondata = await res.json();
+  return jsondata;
+}
+
+function organizeData(data) {
+  const keys = Object.keys(data);
+  let states = {};
+  for (const state in keys) {
+    states[keys[state]] = new State(keys[state], data[keys[state]]);
+  }
+  return states;
+}
+
+class State {
+  constructor(_name, _migration) {
+    this.name = _name;
+    this.migration = _migration;
+  }
+
+  collectMigrationInformation(start, end) {
+    let migrate_data = {};
+
+    while (start <= end) {
+      const year = start.toString();
+      for (const state in this.migration[year]) {
+        if (state === this.name) continue;
+
+        const estimate = this.migration[year][state].estimate;
+        if (!(state in migrate_data)) {
+          migrate_data[state] = estimate;
+        } else {
+          migrate_data[state] += estimate;
+        }
+      }
+      start++;
+    }
+    delete migrate_data.null;
+    return migrate_data;
+  }
+}
 
 class StateInteraction {
   constructor() {
@@ -27,34 +63,14 @@ class StateInteraction {
         }
         document.getElementById(this.stateClicked.id).style.fill = "black";
 
-        this.migrant_data = this.collectMigrationInformation(
+        this.migrant_data = data[
           this.stateClicked.dataset.name
-        );
+        ].collectMigrationInformation(2005, 2022);
         this.rankings = this.calcNumSummary();
 
         this.colorStates();
       });
     }
-  }
-
-  collectMigrationInformation(target_state) {
-    const target_state_data = data[target_state];
-    let migrate_data = {};
-
-    for (const year in target_state_data) {
-      for (const state in target_state_data[year]) {
-        if (state === target_state) continue;
-
-        const estimate = target_state_data[year][state].estimate;
-        if (!(state in migrate_data)) {
-          migrate_data[state] = estimate;
-        } else {
-          migrate_data[state] += estimate;
-        }
-      }
-    }
-    delete migrate_data.null;
-    return migrate_data;
   }
 
   calcNumSummary() {
@@ -118,6 +134,9 @@ class StateDetailBox {
     };
   }
 }
+
+const res = await fetchData();
+const data = organizeData(res); // Organized data
 
 let d = new StateDetailBox();
 
